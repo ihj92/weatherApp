@@ -1,12 +1,14 @@
-import axios from "axios";
+import { http } from "./http";
 
-export const api = {
-	callGet(url, params, signal) {
-		return axios.call({
-			method: 'GET',
-			url: url,
-			params: params,
-			signal: signal
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY
+
+export const weatherApi = {
+	getCurrentWeather(q) {
+		return http.get('/current.json', {
+			params: {
+				key: API_KEY,
+				q,
+			}
 		})
 	}
 }
