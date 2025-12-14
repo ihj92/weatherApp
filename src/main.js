@@ -9,6 +9,7 @@ import 'vuetify/styles'
 import App from './App.vue'
 import router from './router'
 
+import '@/assets/tailwind.css'
 import '@/assets/scss/main.scss'
 
 const vuetify = createVuetify({

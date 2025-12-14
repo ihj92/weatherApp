@@ -1,5 +1,27 @@
 <template>
-	<p>111222333</p>
+	<div class="container p-5">
+		<header>
+			<div>
+				<p>25 May, Wednesday</p>
+				<strong>남양주시 별내동</strong>
+			</div>
+		</header>
+		
+		<body>
+			<section class="visual-area">
+				<div>로띠영역</div>
+				<strong>30º</strong>
+				<p>어제보다 2º 높아요</p>
+				<div>
+				<span class="text-gray-500">최고: 30º</span>
+				<span>최저: 20º</span>
+				</div>
+			</section>
+			
+			<section class="today-area"></section>
+			<section class="week-area"></section> 
+		</body>
+  </div>
 </template>
 
 <script setup>
