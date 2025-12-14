@@ -9,6 +9,8 @@ import 'vuetify/styles'
 import App from './App.vue'
 import router from './router'
 
+import '@/assets/scss/main.scss'
+
 const vuetify = createVuetify({
   components,
   directives,
