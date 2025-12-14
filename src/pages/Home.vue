@@ -7,7 +7,7 @@
 			</div>
 		</header>
 		
-		<body>
+		<main>
 			<section class="visual-area">
 				<div>로띠영역</div>
 				<strong>30º</strong>
@@ -20,7 +20,7 @@
 			
 			<section class="today-area"></section>
 			<section class="week-area"></section> 
-		</body>
+		</main>
   </div>
 </template>
 
