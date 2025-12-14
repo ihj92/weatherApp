@@ -1,3 +1,64 @@
 .container {
   background-color: #29B2DD;
 }
+.visual-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .temperature {
+    line-height: 75px;
+    margin-top: 6px;
+    font-size: 64px;
+    font-weight: 700;
+  }
+  .text {
+    line-height: 20px;
+    font-size: 18px;
+  }
+}
+
+.today-area {
+  position: relative;
+  height: 200px;
+  margin-top: 20px;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: #104084;
+    opacity: 0.2;
+  }
+  span {
+    display: inline-block;
+    padding: 10px;
+    font-size: 20px;
+  }
+}
+
+.week-area {
+  position: relative;
+  height: 200px;
+  margin-top: 20px;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: #104084;
+    opacity: 0.2;
+  }
+  span {
+    display: inline-block;
+    padding: 10px;
+    font-size: 20px;
+  }
+}
+
+.lottie {
+  width: 280px;
+  height: 180px;
+  background-color: #fff;
+}

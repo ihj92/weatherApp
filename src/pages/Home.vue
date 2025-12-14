@@ -1,25 +1,29 @@
 <template>
-	<div class="container p-5">
+	<div class="container">
 		<header>
 			<div>
-				<p>25 May, Wednesday</p>
-				<strong>남양주시 별내동</strong>
+				<span>25 May, Wednesday</span>
+				<p class="mt-2">남양주시 별내동</p>
 			</div>
 		</header>
 		
 		<main>
 			<section class="visual-area">
-				<div>로띠영역</div>
-				<strong>30º</strong>
-				<p>어제보다 2º 높아요</p>
-				<div>
-				<span class="text-gray-500">최고: 30º</span>
-				<span>최저: 20º</span>
+				<div class="lottie">로띠영역</div>
+				<strong class="temperature">30º</strong>
+				<p class="text">어제보다 2º 높아요</p>
+				<div class="text">
+					<span>최고: 30º</span>
+					<span>최저: 20º</span>
 				</div>
 			</section>
 			
-			<section class="today-area"></section>
-			<section class="week-area"></section> 
+			<section class="today-area">
+				<span>Today</span>
+			</section>
+			<section class="week-area">
+				<span>Next Forecast</span>
+			</section> 
 		</main>
   </div>
 </template>
