@@ -8,21 +8,21 @@
 		</header>
 		
 		<main>
-			<section class="visual-area">
-				<div class="lottie">로띠영역</div>
-				<strong class="temperature">30º</strong>
-				<p class="text">어제보다 2º 높아요</p>
-				<div class="text">
+			<section class="current-weather">
+				<div class="cw-ani">로띠영역</div>
+				<strong class="cw-temp">30º</strong>
+				<p class="cw-diff">어제보다 2º 높아요</p>
+				<div class="cw-range">
 					<span>최고: 30º</span>
 					<span>최저: 20º</span>
 				</div>
 			</section>
 			
-			<section class="today-area">
-				<span>Today</span>
+			<section class="today">
+				<span class="sec-title">Today</span>
 			</section>
-			<section class="week-area">
-				<span>Next Forecast</span>
+			<section class="week">
+				<span class="sec-title">Next Forecast</span>
 			</section> 
 		</main>
   </div>
