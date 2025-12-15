@@ -2,7 +2,7 @@
 	<div class="container">
 		<header>
 			<div>
-				<span>25 May, Wednesday</span>
+				<span>{{ today }}</span>
 				<p class="mt-2">남양주시 별내동</p>
 			</div>
 		</header>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-	import { onMounted, ref } from "vue";
+	import { onMounted, ref, computed } from "vue";
 	import { weatherApi } from '@/apis'
 
 	const weather = ref(null);
@@ -56,5 +56,13 @@
 				errorMessage.value = '날씨 정보를 불러오는 중 오류가 발생했습니다.'
 			}
 		})
+	})
+
+	// 오늘 날짜
+	const today = computed(() => {
+		const date = new Date()
+		const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
+
+		return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일 ${days[date.getDay()]}`
 	})
 </script>
