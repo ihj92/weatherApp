@@ -31,6 +31,7 @@
 <script setup>
 	import { onMounted, ref, computed } from "vue";
 	import { weatherApi } from '@/apis'
+	import { kakaoApi } from '@/apis'
 
 	const weather = ref(null);
 	const errorMessage = ref('')
@@ -42,18 +43,14 @@
 		}
 
 		navigator.geolocation.getCurrentPosition(async (pos) => {
-			const lat = pos.coords.latitude;
-			const lon = pos.coords.longitude;
-			const q = `${lat},${lon}`
-
-			console.log('location', q)
+			const { latitude, longitude } = pos.coords
 
 			try {
-				const res = await weatherApi.getCurrentWeather(q)
-				// weather.value = res
-				console.log('res', res.data)
-			} catch (err) {
-				errorMessage.value = '날씨 정보를 불러오는 중 오류가 발생했습니다.'
+				const addressRes = await kakaoApi.getAddressByCoords(latitude, longitude)
+
+				console.log('kakao!!', addressRes)
+			} catch(e) {
+				 errorMessage.value = '정보를 불러오지 못했습니다.'
 			}
 		})
 	})
