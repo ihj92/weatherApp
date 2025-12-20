@@ -35,11 +35,18 @@
 	import { weatherApi } from '@/apis'
 	import { kakaoApi } from '@/apis'
 
-	const weather = ref(null);
-
+	// ref
 	const addressName = ref('')
 	const currentWeather = ref('')
 	const errorMessage = ref('')
+
+	// 오늘 날짜
+	const today = computed(() => {
+		const date = new Date()
+		const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
+
+		return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일 ${days[date.getDay()]}`
+	})
 
 	onMounted(() => {
 		if(!navigator.geolocation) {
@@ -52,32 +59,25 @@
 			const q = `${latitude},${longitude}`
 
 			try {
-				const addressRes = await kakaoApi.getAddressByCoords(latitude, longitude)
+				const [addressRes, weatherRes] = await Promise.all([
+					kakaoApi.getAddressByCoords(latitude, longitude),
+					weatherApi.getCurrentWeather(q)
+				])
 
+				// 현재 위치
 				const doc = addressRes.data.documents[0]
-
 				addressName.value = doc.address_name
 
-			} catch(e) {
-				 errorMessage.value = '정보를 불러오지 못했습니다.'
-			}
-
-			try {
-				const weatherRes = await weatherApi.getCurrentWeather(q)
-
+				// 현재 기온
 				currentWeather.value = weatherRes.data.current.temp_c
-				console.log('현재기온', currentWeather.value)
+
 			} catch(e) {
-				console.log('현재 날씨 불러오지 못함')
+					errorMessage.value = '정보를 불러오지 못했습니다.'
 			}
-		})
-	})
-
-	// 오늘 날짜
-	const today = computed(() => {
-		const date = new Date()
-		const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
-
-		return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일 ${days[date.getDay()]}`
+		},
+		() => {
+				errorMessage.value = '위치 정보를 가져오지 못했습니다.'
+			}
+		)
 	})
 </script>
