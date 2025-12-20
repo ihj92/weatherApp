@@ -10,11 +10,11 @@
 		<main>
 			<section class="current-weather">
 				<div class="cw-ani">로띠영역</div>
-				<strong class="cw-temp">{{ currentWeather }}º</strong>
+				<strong class="cw-temp">{{ currentTemp }}º</strong>
 				<p class="cw-diff">어제보다 2º 높아요</p>
 				<div class="cw-range">
-					<span>최고: 30º</span>
-					<span>최저: 20º</span>
+					<span>최고: {{ maxTemp }}º</span>
+					<span>최저: {{ minTemp }}º</span>
 				</div>
 			</section>
 			
@@ -37,7 +37,9 @@
 
 	// ref
 	const addressName = ref('')
-	const currentWeather = ref('')
+	const currentTemp = ref(null)
+	const maxTemp = ref(null)
+	const minTemp = ref(null)
 	const errorMessage = ref('')
 
 	// 오늘 날짜
@@ -61,7 +63,7 @@
 			try {
 				const [addressRes, weatherRes] = await Promise.all([
 					kakaoApi.getAddressByCoords(latitude, longitude),
-					weatherApi.getCurrentWeather(q)
+					weatherApi.getForecastWeather(q)
 				])
 
 				// 현재 위치
@@ -69,7 +71,11 @@
 				addressName.value = doc.address_name
 
 				// 현재 기온
-				currentWeather.value = weatherRes.data.current.temp_c
+				currentTemp.value = weatherRes.data.current.temp_c
+
+				// 오늘 최고/최저 기온
+				maxTemp.value = weatherRes.data.forecast.forecastday[0].day.maxtemp_c
+				minTemp.value = weatherRes.data.forecast.forecastday[0].day.mintemp_c
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'
