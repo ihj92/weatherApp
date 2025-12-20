@@ -10,7 +10,7 @@
 		<main>
 			<section class="current-weather">
 				<div class="cw-ani">로띠영역</div>
-				<strong class="cw-temp">30º</strong>
+				<strong class="cw-temp">{{ currentWeather }}º</strong>
 				<p class="cw-diff">어제보다 2º 높아요</p>
 				<div class="cw-range">
 					<span>최고: 30º</span>
@@ -38,6 +38,7 @@
 	const weather = ref(null);
 
 	const addressName = ref('')
+	const currentWeather = ref('')
 	const errorMessage = ref('')
 
 	onMounted(() => {
@@ -48,6 +49,7 @@
 
 		navigator.geolocation.getCurrentPosition(async (pos) => {
 			const { latitude, longitude } = pos.coords
+			const q = `${latitude},${longitude}`
 
 			try {
 				const addressRes = await kakaoApi.getAddressByCoords(latitude, longitude)
@@ -58,6 +60,15 @@
 
 			} catch(e) {
 				 errorMessage.value = '정보를 불러오지 못했습니다.'
+			}
+
+			try {
+				const weatherRes = await weatherApi.getCurrentWeather(q)
+
+				currentWeather.value = weatherRes.data.current.temp_c
+				console.log('현재기온', currentWeather.value)
+			} catch(e) {
+				console.log('현재 날씨 불러오지 못함')
 			}
 		})
 	})
