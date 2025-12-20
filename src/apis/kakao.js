@@ -12,7 +12,7 @@ const kakaoHttp = axios.create({
 
 export const kakaoApi = {
   getAddressByCoords(lat, lon) {
-    return kakaoHttp.get('/v2/local/geo/coord2address.json', {
+    return kakaoHttp.get('/v2/local/geo/coord2regioncode.json', {
       params: {
         x: lon,
         y: lat,

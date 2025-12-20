@@ -3,7 +3,7 @@
 		<header>
 			<div>
 				<span>{{ today }}</span>
-				<p class="mt-2">남양주시 별내동</p>
+				<p class="mt-2">{{ addressName }}</p>
 			</div>
 		</header>
 		
@@ -21,9 +21,11 @@
 			<section class="today">
 				<span class="sec-title">Today</span>
 			</section>
-			<section class="week">
+
+			<!-- 추후 추가  -->
+			<!-- <section class="week">
 				<span class="sec-title">Next Forecast</span>
-			</section> 
+			</section> -->
 		</main>
   </div>
 </template>
@@ -34,6 +36,8 @@
 	import { kakaoApi } from '@/apis'
 
 	const weather = ref(null);
+
+	const addressName = ref('')
 	const errorMessage = ref('')
 
 	onMounted(() => {
@@ -48,7 +52,10 @@
 			try {
 				const addressRes = await kakaoApi.getAddressByCoords(latitude, longitude)
 
-				console.log('kakao!!', addressRes)
+				const doc = addressRes.data.documents[0]
+
+				addressName.value = doc.address_name
+
 			} catch(e) {
 				 errorMessage.value = '정보를 불러오지 못했습니다.'
 			}
