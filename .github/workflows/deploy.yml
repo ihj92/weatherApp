@@ -21,7 +21,12 @@ jobs:
           node-version: 20
 
       - run: npm ci
-      - run: npm run build
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_WEATHER_API_KEY: ${{ secrets.VITE_WEATHER_API_KEY }}
+          VITE_KAKAO_REST_API_KEY: ${{ secrets.VITE_KAKAO_REST_API_KEY }}
 
       - uses: actions/configure-pages@v5
 
