@@ -9,12 +9,14 @@
 		
 		<main>
 			<section class="current-weather">
-				<div class="cw-ani">로띠영역</div>
+				<div class="cw-img">
+					<img :src=dayWeather.icon />
+				</div>
 				<strong class="cw-temp">{{ currentTemp }}º</strong>
-				<p class="cw-diff">어제보다 2º 높아요</p>
+				<!-- <p class="cw-diff">어제보다 2º 높아요</p> -->
 				<div class="cw-range">
-					<span>최고: {{ maxTemp }}º</span>
-					<span>최저: {{ minTemp }}º</span>
+					<span>최고: {{ dayWeather.max }}º</span>
+					<span>최저: {{ dayWeather.min }}º</span>
 				</div>
 			</section>
 			
@@ -34,12 +36,13 @@
 	import { onMounted, ref, computed } from "vue";
 	import { weatherApi } from '@/apis'
 	import { kakaoApi } from '@/apis'
+	import { WEATHER_CODE_GROUP } from '@/constants/weatherCode'
+	import { getWeatherIcon } from '@/utils/weatherIcon'
 
 	// ref
 	const addressName = ref('')
+	const dayWeather = ref({})
 	const currentTemp = ref(null)
-	const maxTemp = ref(null)
-	const minTemp = ref(null)
 	const errorMessage = ref('')
 
 	// 오늘 날짜
@@ -73,9 +76,13 @@
 				// 현재 기온
 				currentTemp.value = weatherRes.data.current.temp_c
 
-				// 오늘 최고/최저 기온
-				maxTemp.value = weatherRes.data.forecast.forecastday[0].day.maxtemp_c
-				minTemp.value = weatherRes.data.forecast.forecastday[0].day.mintemp_c
+				// 오늘 최고,최저 기온 / 날씨 아이콘
+				const day = weatherRes.data.forecast.forecastday[0].day
+				dayWeather.value = {
+					max: day.maxtemp_c,
+					min: day.mintemp_c,
+					icon: getWeatherIcon(day.condition.code),
+				}
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'
