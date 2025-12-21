@@ -1,45 +1,59 @@
 .container {
   background-color: #29B2DD;
 }
+.header-info {
+  font-size: 14px;
+}
 .current-weather {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .cw-img {
+    width: 140px;
+    height: 140px;
+  }
   .cw-temp {
-    line-height: 75px;
     margin-top: 6px;
-    font-size: 64px;
+    font-size: 60px;
     font-weight: 700;
   }
   .cw-range {
+    display: flex;
+    gap: 10px;
     line-height: 20px;
-    font-size: 18px;
+    margin-top: 8px;
+    font-size: 16px;
   }
 }
 
-.sec-title {
-  display: inline-block;
-  padding: 10px;
-  font-size: 20px;
-}
-
-.today,
-.week {
+.hourly-weather,
+.weekly-weather {
   position: relative;
-  height: 200px;
   margin-top: 20px;
-  &::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    background-color: #104084;
-    opacity: 0.2;
-  }  
+  border-radius: 20px;
+  background-color: rgba(238, 238, 238, 0.2);
+  overflow-x: auto;
+  .sec-title {
+    padding: 16px;
+    font-size: 14px;
+  }
 }
 
-.cw-img {
-  width: 187px;
-  height: 187px;
+.hourly-weather {
+  .hourly-list {
+    display: inline-flex;
+    column-gap: 10px;
+    padding: 0 16px 20px;
+    position: relative;
+    .hourly-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      .icon {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
 }

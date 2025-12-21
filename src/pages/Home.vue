@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<header>
-			<div>
+			<div class="header-info">
 				<span>{{ today }}</span>
 				<p class="mt-2">{{ addressName }}</p>
 			</div>
@@ -20,14 +20,24 @@
 				</div>
 			</section>
 			
-			<section class="today">
-				<span class="sec-title">Today</span>
+			<!-- 시간별 날씨 -->
+			<section class="hourly-weather">
+				<p class="sec-title">시간별 예보</p>
+				<ul class="hourly-list">
+					<li class="hourly-item" v-for="hour in hourlyWeather" :key="hour.time">
+						<span class="time">{{ hour.time }}</span>
+						<div class="icon">
+							<img :src="hour.icon" alt="" />
+						</div>
+						<span class="temp">{{ hour.temp }}°</span>
+					</li>
+				</ul>
 			</section>
 
-			<!-- 추후 추가  -->
-			<!-- <section class="week">
-				<span class="sec-title">Next Forecast</span>
-			</section> -->
+			<!-- 이번주 날씨 -->
+			<section class="weekly-weather">
+				<p class="sec-title">주간 예보</p>
+			</section>
 		</main>
   </div>
 </template>
@@ -43,6 +53,7 @@
 	const addressName = ref('')
 	const dayWeather = ref({})
 	const currentTemp = ref(null)
+	const hourlyWeather = ref([])
 	const errorMessage = ref('')
 
 	// 오늘 날짜
@@ -66,7 +77,7 @@
 			try {
 				const [addressRes, weatherRes] = await Promise.all([
 					kakaoApi.getAddressByCoords(latitude, longitude),
-					weatherApi.getForecastWeather(q)
+					weatherApi.getForecastWeather(q, 2)
 				])
 
 				// 현재 위치
@@ -83,6 +94,26 @@
 					min: day.mintemp_c,
 					icon: getWeatherIcon(day.condition.code),
 				}
+
+				// 시간별 날씨
+				const forecastDays = weatherRes.data.forecast.forecastday
+
+				const now = new Date()
+				const currentHour = now.getHours()
+
+				const allHours = [
+					...forecastDays[0].hour,
+					...forecastDays[1].hour,
+				]
+
+				hourlyWeather.value = allHours
+				.slice(currentHour, currentHour + 24)
+				.map(h => ({
+					time: h.time.split(' ')[1],
+					temp: h.temp_c,
+					icon: getWeatherIcon(h.condition.code)
+				}))
+				console.log('ddd', allHours[0].condition.code)
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'

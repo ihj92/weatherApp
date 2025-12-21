@@ -8,7 +8,7 @@ const weatherHttp = axios.create({
 })
 
 export const weatherApi = {
-	getForecastWeather(q, days = 7) {
+	getForecastWeather(q, days) {
 		return weatherHttp.get('/forecast.json', {
 			params: {
 				key: API_KEY,
