@@ -34,9 +34,19 @@
 				</ul>
 			</section>
 
-			<!-- 이번주 날씨 -->
-			<section class="weekly-weather">
-				<p class="sec-title">주간 예보</p>
+			<!-- 3일 날씨 -->
+			<section class="daily-weather">
+				<p class="sec-title">단기 예보</p>
+				<ul class="daily-list">
+					<li class="daily-item" v-for="(daily, index) in dailyWeather" :key="index">
+						<div class="icon">
+							<img :src="daily.icon" alt="" />
+						</div>
+						<span class="time">{{ daily.max }}</span>
+						/ 
+						<span class="temp">{{ daily.min }}°</span>
+					</li>
+				</ul>
 			</section>
 		</main>
   </div>
@@ -54,6 +64,7 @@
 	const dayWeather = ref({})
 	const currentTemp = ref(null)
 	const hourlyWeather = ref([])
+	const dailyWeather = ref([])
 	const errorMessage = ref('')
 
 	// 오늘 날짜
@@ -77,7 +88,7 @@
 			try {
 				const [addressRes, weatherRes] = await Promise.all([
 					kakaoApi.getAddressByCoords(latitude, longitude),
-					weatherApi.getForecastWeather(q, 2)
+					weatherApi.getForecastWeather(q, 3)
 				])
 
 				// 현재 위치
@@ -113,7 +124,14 @@
 					temp: h.temp_c,
 					icon: getWeatherIcon(h.condition.code)
 				}))
-				console.log('ddd', allHours[0].condition.code)
+
+				// 3일 날씨
+				dailyWeather.value = forecastDays
+				.map(h => ({
+					max: h.day.maxtemp_c,
+					min: h.day.mintemp_c,
+					icon: getWeatherIcon(h.day.condition.code)
+				}))
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'
