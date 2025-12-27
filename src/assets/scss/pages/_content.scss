@@ -28,11 +28,9 @@
 
 .hourly-weather,
 .daily-weather {
-  position: relative;
   margin-top: 20px;
   border-radius: 20px;
   background-color: rgba(238, 238, 238, 0.2);
-  overflow-x: auto;
   .sec-title {
     padding: 16px;
     font-size: 14px;
@@ -41,10 +39,10 @@
 
 .hourly-weather {
   .hourly-list {
-    display: inline-flex;
-    column-gap: 10px;
+    display: flex;
+    column-gap: 15px;
     padding: 0 16px 20px;
-    position: relative;
+    overflow-x: auto;
     .hourly-item {
       display: flex;
       flex-direction: column;
@@ -67,10 +65,19 @@
     .daily-item {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 20px;
+      .label {
+        font-size: 15px;
+      }
       .icon {
         width: 30px;
         height: 30px;
+      }
+      .time {
+        margin-right: -5px;
+      }
+      .temp {
+        margin-left: -5px;
       }
     }
   }

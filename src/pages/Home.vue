@@ -27,7 +27,7 @@
 					<li class="hourly-item" v-for="hour in hourlyWeather" :key="hour.time">
 						<span class="time">{{ hour.time }}</span>
 						<div class="icon">
-							<img :src="hour.icon" alt="" />
+							<img :src="hour.icon" />
 						</div>
 						<span class="temp">{{ hour.temp }}°</span>
 					</li>
@@ -39,8 +39,9 @@
 				<p class="sec-title">단기 예보</p>
 				<ul class="daily-list">
 					<li class="daily-item" v-for="(daily, index) in dailyWeather" :key="index">
+						<span class="label">{{ daily.label }}</span>
 						<div class="icon">
-							<img :src="daily.icon" alt="" />
+							<img :src="daily.icon" />
 						</div>
 						<span class="time">{{ daily.max }}</span>
 						/ 
@@ -56,7 +57,6 @@
 	import { onMounted, ref, computed } from "vue";
 	import { weatherApi } from '@/apis'
 	import { kakaoApi } from '@/apis'
-	import { WEATHER_CODE_GROUP } from '@/constants/weatherCode'
 	import { getWeatherIcon } from '@/utils/weatherIcon'
 
 	// ref
@@ -66,6 +66,8 @@
 	const hourlyWeather = ref([])
 	const dailyWeather = ref([])
 	const errorMessage = ref('')
+
+	const dayLabels = ['오늘', '내일', '모레']
 
 	// 오늘 날짜
 	const today = computed(() => {
@@ -127,10 +129,11 @@
 
 				// 3일 날씨
 				dailyWeather.value = forecastDays
-				.map(h => ({
+				.map((h, index) => ({
 					max: h.day.maxtemp_c,
 					min: h.day.mintemp_c,
-					icon: getWeatherIcon(h.day.condition.code)
+					icon: getWeatherIcon(h.day.condition.code),
+					label: dayLabels[index],
 				}))
 
 			} catch(e) {
