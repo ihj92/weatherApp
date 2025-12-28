@@ -16,5 +16,14 @@ export const weatherApi = {
 				days
 			}
 		})
+	},
+	getHistoryWeather(q, dt) {
+		return weatherHttp.get('/history.json', {
+			params: {
+				key: API_KEY,
+				q,
+				dt
+			}
+		})
 	}
 }

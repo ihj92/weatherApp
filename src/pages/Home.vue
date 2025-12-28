@@ -13,7 +13,7 @@
 					<img :src=dayWeather.icon />
 				</div>
 				<strong class="cw-temp">{{ currentTemp }}º</strong>
-				<!-- <p class="cw-diff">어제보다 2º 높아요</p> -->
+				<p class="cw-diff">{{ compareText }}</p>
 				<div class="cw-range">
 					<span>최고: {{ dayWeather.max }}º</span>
 					<span>최저: {{ dayWeather.min }}º</span>
@@ -66,6 +66,7 @@
 	const hourlyWeather = ref([])
 	const dailyWeather = ref([])
 	const errorMessage = ref('')
+	const tempDiff = ref(0)
 
 	const dayLabels = ['오늘', '내일', '모레']
 
@@ -75,6 +76,28 @@
 		const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
 
 		return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일 ${days[date.getDay()]}`
+	})
+
+	// 어제 날짜
+	const getYesterday = () => {
+		const d = new Date()
+		d.setDate(d.getDate() - 1)
+
+		const yyyy = d.getFullYear()
+		const mm = String(d.getMonth() + 1).padStart(2, '0')
+		const dd = String(d.getDate()).padStart(2, '0')
+
+		return `${yyyy}-${mm}-${dd}`
+	}
+
+	// 어제, 오늘 기온 비교
+	const compareText = computed(() => {
+		const diff = tempDiff.value
+
+		if (diff === null) return ''
+		if (diff > 0) return `어제보다 ${diff.toFixed(1)}° 높아요`
+		if (diff < 0) return `어제보다 ${Math.abs(diff).toFixed(1)}° 낮아요`
+		return '어제와 같아요'
 	})
 
 	onMounted(() => {
@@ -87,10 +110,13 @@
 			const { latitude, longitude } = pos.coords
 			const q = `${latitude},${longitude}`
 
+			const yesterday = getYesterday()
+
 			try {
-				const [addressRes, weatherRes] = await Promise.all([
+				const [addressRes, weatherRes, yesterdayRes] = await Promise.all([
 					kakaoApi.getAddressByCoords(latitude, longitude),
-					weatherApi.getForecastWeather(q, 3)
+					weatherApi.getForecastWeather(q, 3),
+					weatherApi.getHistoryWeather(q, yesterday)
 				])
 
 				// 현재 위치
@@ -135,6 +161,13 @@
 					icon: getWeatherIcon(h.day.condition.code),
 					label: dayLabels[index],
 				}))
+
+				// 어제,오늘 평균 기온 비교
+				const todayAvg = forecastDays[0].day.avgtemp_c
+				const yesterdayAvg = yesterdayRes.data.forecast.forecastday[0].day.avgtemp_c
+
+				tempDiff.value = todayAvg - yesterdayAvg
+				console.log(yesterdayAvg)
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'
