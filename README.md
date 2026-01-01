@@ -34,6 +34,7 @@
 
 ### 기타
 - Browser Geolocation API
+- GitHub Actions (CI)
 
 ---
 
@@ -54,6 +55,22 @@ src
  ┃ ┗ Home.vue
  ┗ main.js
 ```
+---
+
+## 🤖 CI / CD (GitHub Actions)
+
+GitHub Actions를 사용해  
+**빌드 및 배포 과정을 자동화**했습니다.
+
+### 🔄 동작 흐름
+
+```text
+main 브랜치에 커밋 →
+GitHub Actions 실행 →
+프로젝트 빌드 →
+GitHub Pages에 자동 배포
+```
+
 ---
 
 ## 🧾 Commit Convention
