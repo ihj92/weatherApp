@@ -42,7 +42,7 @@
 
 ```bash
 src
- ┣ api
+ ┣ apis
  ┃ ┣ weather.js
  ┃ ┗ kakao.js
 #  변경 예정

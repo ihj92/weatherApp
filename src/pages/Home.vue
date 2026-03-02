@@ -8,47 +8,50 @@
 		</header>
 		
 		<main>
-			<section class="current-weather">
-				<div class="cw-img">
-					<img :src=dayWeather.icon />
-				</div>
-				<strong class="cw-temp">{{ currentTemp }}º</strong>
-				<p class="cw-diff">{{ compareText }}</p>
-				<div class="cw-range">
-					<span>최고: {{ dayWeather.max }}º</span>
-					<span>최저: {{ dayWeather.min }}º</span>
-				</div>
-			</section>
-			
-			<!-- 시간별 날씨 -->
-			<section class="hourly-weather">
-				<p class="sec-title">시간별 예보</p>
-				<ul class="hourly-list">
-					<li class="hourly-item" v-for="hour in hourlyWeather" :key="hour.time">
-						<span class="time">{{ hour.time }}</span>
-						<div class="icon">
-							<img :src="hour.icon" />
-						</div>
-						<span class="temp">{{ hour.temp }}°</span>
-					</li>
-				</ul>
-			</section>
+			<p v-if="errorMessage">{{ errorMessage }}</p>
+			<div v-else>
+				<section class="current-weather">
+					<div class="cw-img">
+						<img :src=dayWeather.icon />
+					</div>
+					<strong class="cw-temp">{{ currentTemp }}º</strong>
+					<p class="cw-diff">{{ compareText }}</p>
+					<div class="cw-range">
+						<span>최고: {{ dayWeather.max }}º</span>
+						<span>최저: {{ dayWeather.min }}º</span>
+					</div>
+				</section>
+				
+				<!-- 시간별 날씨 -->
+				<section class="hourly-weather">
+					<p class="sec-title">시간별 예보</p>
+					<ul class="hourly-list">
+						<li class="hourly-item" v-for="hour in hourlyWeather" :key="hour.time">
+							<span class="time">{{ hour.time }}</span>
+							<div class="icon">
+								<img :src="hour.icon" />
+							</div>
+							<span class="temp">{{ hour.temp }}°</span>
+						</li>
+					</ul>
+				</section>
 
-			<!-- 3일 날씨 -->
-			<section class="daily-weather">
-				<p class="sec-title">단기 예보</p>
-				<ul class="daily-list">
-					<li class="daily-item" v-for="(daily, index) in dailyWeather" :key="index">
-						<span class="label">{{ daily.label }}</span>
-						<div class="icon">
-							<img :src="daily.icon" />
-						</div>
-						<span class="time">{{ daily.max }}</span>
-						/ 
-						<span class="temp">{{ daily.min }}°</span>
-					</li>
-				</ul>
-			</section>
+				<!-- 3일 날씨 -->
+				<section class="daily-weather">
+					<p class="sec-title">단기 예보</p>
+					<ul class="daily-list">
+						<li class="daily-item" v-for="(daily, index) in dailyWeather" :key="index">
+							<span class="label">{{ daily.label }}</span>
+							<div class="icon">
+								<img :src="daily.icon" />
+							</div>
+							<span class="time">{{ daily.max }}</span>
+							/ 
+							<span class="temp">{{ daily.min }}°</span>
+						</li>
+					</ul>
+				</section>
+			</div>
 		</main>
   </div>
 </template>
@@ -107,7 +110,10 @@
 		}
 
 		navigator.geolocation.getCurrentPosition(async (pos) => {
-			const { latitude, longitude } = pos.coords
+			// 위치값 중국으로 잡혀서 임시로 넣음
+			const latitude = 37.666129
+			const longitude = 127.110423
+			// const { latitude, longitude } = pos.coords
 			const q = `${latitude},${longitude}`
 
 			const yesterday = getYesterday()
@@ -167,15 +173,12 @@
 				const yesterdayAvg = yesterdayRes.data.forecast.forecastday[0].day.avgtemp_c
 
 				tempDiff.value = todayAvg - yesterdayAvg
-				console.log(yesterdayAvg)
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'
 			}
 		},
-		() => {
-				errorMessage.value = '위치 정보를 가져오지 못했습니다.'
-			}
+		() => { errorMessage.value = '위치 정보를 가져오지 못했습니다.'},
 		)
 	})
 </script>
