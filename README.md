@@ -45,10 +45,10 @@ src
  ┣ apis
  ┃ ┣ weather.js
  ┃ ┗ kakao.js
-#  변경 예정
-#  ┣ components
-#  ┃ ┣ DailyWeather.vue
-#  ┃ ┗ HourlyWeather.vue
+ ┣ components
+ ┃ ┣ CurrentWeather.vue
+ ┃ ┣ DailyWeather.vue
+ ┃ ┗ HourlyWeather.vue
  ┣ utils
  ┃ ┗ weatherIcon.js
  ┣ pages

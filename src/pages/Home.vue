@@ -11,47 +11,21 @@
 			<p v-if="errorMessage">{{ errorMessage }}</p>
 			<p v-else-if="isLoading">날씨 정보를 가져오는 중입니다!</p>
 			<div v-else>
-				<section class="current-weather">
-					<div class="cw-img">
-						<img :src=dayWeather.icon />
-					</div>
-					<strong class="cw-temp">{{ currentTemp }}º</strong>
-					<p class="cw-diff">{{ compareText }}</p>
-					<div class="cw-range">
-						<span>최고: {{ dayWeather.max }}º</span>
-						<span>최저: {{ dayWeather.min }}º</span>
-					</div>
-				</section>
-				
+				<!-- 현재 날씨 -->
+				<CurrentWeather 
+					:dayWeather="dayWeather"
+					:currentTemp="currentTemp"
+					:compareText="compareText"
+				/>
 				<!-- 시간별 날씨 -->
-				<section class="hourly-weather">
-					<p class="sec-title">시간별 예보</p>
-					<ul class="hourly-list">
-						<li class="hourly-item" v-for="hour in hourlyWeather" :key="hour.time">
-							<span class="time">{{ hour.time }}</span>
-							<div class="icon">
-								<img :src="hour.icon" />
-							</div>
-							<span class="temp">{{ hour.temp }}°</span>
-						</li>
-					</ul>
-				</section>
+				<HourlyWeather 
+					:hourlyWeather="hourlyWeather"
+				/>
 
 				<!-- 3일 날씨 -->
-				<section class="daily-weather">
-					<p class="sec-title">단기 예보</p>
-					<ul class="daily-list">
-						<li class="daily-item" v-for="(daily, index) in dailyWeather" :key="index">
-							<span class="label">{{ daily.label }}</span>
-							<div class="icon">
-								<img :src="daily.icon" />
-							</div>
-							<span class="time">{{ daily.max }}</span>
-							/ 
-							<span class="temp">{{ daily.min }}°</span>
-						</li>
-					</ul>
-				</section>
+				<DailyWeather 
+					:dailyWeather="dailyWeather"
+				/>
 			</div>
 		</main>
   </div>
@@ -62,6 +36,9 @@
 	import { weatherApi } from '@/apis'
 	import { kakaoApi } from '@/apis'
 	import { getWeatherIcon } from '@/utils/weatherIcon'
+	import CurrentWeather from "@/components/CurrentWeather.vue"; 
+	import HourlyWeather from "@/components/HourlyWeather.vue";
+	import DailyWeather  from "@/components/DailyWeather.vue";
 
 	// ref
 	const addressName = ref('')
