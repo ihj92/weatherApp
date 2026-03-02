@@ -9,6 +9,7 @@
 		
 		<main>
 			<p v-if="errorMessage">{{ errorMessage }}</p>
+			<p v-else-if="isLoading">날씨 정보를 가져오는 중입니다!</p>
 			<div v-else>
 				<section class="current-weather">
 					<div class="cw-img">
@@ -70,6 +71,7 @@
 	const dailyWeather = ref([])
 	const errorMessage = ref('')
 	const tempDiff = ref(0)
+	const isLoading = ref(true)
 
 	const dayLabels = ['오늘', '내일', '모레']
 
@@ -142,10 +144,7 @@
 
 				// 시간별 날씨
 				const forecastDays = weatherRes.data.forecast.forecastday
-
-				const now = new Date()
-				const currentHour = now.getHours()
-
+				const currentHour = new Date().getHours()
 				const allHours = [
 					...forecastDays[0].hour,
 					...forecastDays[1].hour,
@@ -176,9 +175,13 @@
 
 			} catch(e) {
 					errorMessage.value = '정보를 불러오지 못했습니다.'
+			}	finally {
+				isLoading.value = false
 			}
 		},
-		() => { errorMessage.value = '위치 정보를 가져오지 못했습니다.'},
-		)
+		() => { 
+			errorMessage.value = '위치 정보를 가져오지 못했습니다.'
+			isLoading.value = false
+		})
 	})
 </script>
